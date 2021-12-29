@@ -1,6 +1,6 @@
 # grecaptcha
 
-This simple [flutter](http://flutter.io/) plugin allows using the
+This simple [flutter](https://flutter.dev/) plugin allows using the
 [SafetyNet API](https://developer.android.com/training/safetynet/recaptcha.html)
 on Android devices to verify that the user is human.
 
