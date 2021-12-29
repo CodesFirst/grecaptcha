@@ -1,6 +1,6 @@
 name: grecaptcha
 description: Allows accessing the SafetyNet reCaptcha API for android devices in flutter.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/CodesFirst/grecaptcha
 
 environment:
