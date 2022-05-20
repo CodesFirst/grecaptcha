@@ -11,7 +11,7 @@ First, include the plugin in your project's dependencies by including it in
 the relevant section of your `pubspec.yaml`:
 ```yaml
 dependencies:
-  grecaptcha: ^1.0.0
+  grecaptcha: ^0.0.3
 ```
 Next, you wil need to register your app in the reCAPTCHA admin console. Go
 to https://www.google.com/recaptcha/admin#list and register by filling out

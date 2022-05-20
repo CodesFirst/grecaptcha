@@ -17,12 +17,9 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-enum _VerificationStep {
-  showingButton, working, error, verified
-}
+enum _VerificationStep { showingButton, working, error, verified }
 
 class _MyAppState extends State<MyApp> {
-
   // Start by showing the button inviting the user to use the example
   _VerificationStep _step = _VerificationStep.showingButton;
 
@@ -64,8 +61,7 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.blueAccent,
                 textColor: Colors.white,
               )
-            ]
-        );
+            ]);
         break;
       case _VerificationStep.working:
         content = Column(
@@ -74,21 +70,16 @@ class _MyAppState extends State<MyApp> {
             children: const [
               CircularProgressIndicator(),
               Text("Trying to figure out whether you're human"),
-            ]
-        );
+            ]);
         break;
       case _VerificationStep.verified:
-        content = const Text(
-            "The reCaptcha API returned a token, indicating that you're a human. "
-                "In real world use case, you would send use the token returned to "
-                "your backend-server so that it can verify it as well."
-        );
+        content = const Text("The reCaptcha API returned a token, indicating that you're a human. "
+            "In real world use case, you would send use the token returned to "
+            "your backend-server so that it can verify it as well.");
         break;
       case _VerificationStep.error:
-        content = const Text(
-            "We could not verify that you're a human :( This can occur if you "
-                "have no internet connection (or if you really are a a bot)."
-        );
+        content = const Text("We could not verify that you're a human :( This can occur if you "
+            "have no internet connection (or if you really are a a bot).");
     }
 
     return MaterialApp(
