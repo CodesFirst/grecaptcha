@@ -9,3 +9,7 @@
 ## 0.0.4
 
 * Update architecture project
+
+## 0.0.5
+
+* Update readme
