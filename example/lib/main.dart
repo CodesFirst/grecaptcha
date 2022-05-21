@@ -8,7 +8,7 @@ void main() => runApp(const MyApp());
 // generate them on https://www.google.com/recaptcha/admin#list by selecting
 // reCAPTCHA Android. The readme of this plugin contains a more detailed
 // explanation.
-const String siteKey = "6LfEXAcgAAAAAOfuEeCuIjRarKqtvrlVazzBbqQ9"; //"your_key";
+const String siteKey = "your_key"; //"your_key";
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -54,8 +54,7 @@ class _MyAppState extends State<MyApp> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                  "This example will use the reCaptcha API to verify that you're human"),
+              const Text("This example will use the reCaptcha API to verify that you're human"),
               MaterialButton(
                 onPressed: _startVerification,
                 child: const Text("VERIFY"),
@@ -74,14 +73,12 @@ class _MyAppState extends State<MyApp> {
             ]);
         break;
       case _VerificationStep.verified:
-        content = const Text(
-            "The reCaptcha API returned a token, indicating that you're a human. "
+        content = const Text("The reCaptcha API returned a token, indicating that you're a human. "
             "In real world use case, you would send use the token returned to "
             "your backend-server so that it can verify it as well.");
         break;
       case _VerificationStep.error:
-        content = const Text(
-            "We could not verify that you're a human :( This can occur if you "
+        content = const Text("We could not verify that you're a human :( This can occur if you "
             "have no internet connection (or if you really are a a bot).");
     }
 
