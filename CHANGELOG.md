@@ -13,3 +13,16 @@
 ## 0.0.5
 
 * Update readme
+
+## 0.0.6
+
+* Added logic for isSupported and added a new googlePlayServicesAvailability method that returns :
+
+<code>
+    GooglePlayServicesAvailability.success
+    GooglePlayServicesAvailability.serviceMissing
+    GooglePlayServicesAvailability.serviceUpdating
+    GooglePlayServicesAvailability.serviceVersionUpdateRequired
+    GooglePlayServicesAvailability.serviceDisabled
+    GooglePlayServicesAvailability.serviceInvalid
+</code>

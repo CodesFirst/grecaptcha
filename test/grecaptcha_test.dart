@@ -1,12 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grecaptcha/grecaptcha.dart';
-import 'package:grecaptcha/grecaptcha_platform_interface.dart';
 import 'package:grecaptcha/grecaptcha_method_channel.dart';
+import 'package:grecaptcha/grecaptcha_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockGrecaptchaPlatform
-    with MockPlatformInterfaceMixin
-    implements GrecaptchaPlatform {
+class MockGrecaptchaPlatform with MockPlatformInterfaceMixin implements GrecaptchaPlatform {
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
 
@@ -17,6 +15,12 @@ class MockGrecaptchaPlatform
   @override
   Future<String> verifyWithRecaptcha(String siteKey) {
     // TODO: implement verifyWithRecaptcha
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GooglePlayServicesAvailability?> googlePlayServicesAvailability() {
+    // TODO: implement googlePlayServicesAvailability
     throw UnimplementedError();
   }
 }
