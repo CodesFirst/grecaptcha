@@ -15,8 +15,7 @@ class MethodChannelGrecaptcha extends GrecaptchaPlatform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version =
-        await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
   }
 
@@ -45,5 +44,28 @@ class MethodChannelGrecaptcha extends GrecaptchaPlatform {
     }
 
     return await methodChannel.invokeMethod("verify", {"key": siteKey});
+  }
+
+  //Check if you have the google play service enabled
+  @override
+  Future<GooglePlayServicesAvailability?> googlePlayServicesAvailability() async {
+    final String result = await methodChannel.invokeMethod('checkGooglePlayServicesAvailability');
+
+    switch (result) {
+      case 'success':
+        return GooglePlayServicesAvailability.success;
+      case 'service_missing':
+        return GooglePlayServicesAvailability.serviceMissing;
+      case 'service_updating':
+        return GooglePlayServicesAvailability.serviceUpdating;
+      case 'service_version_update_required':
+        return GooglePlayServicesAvailability.serviceVersionUpdateRequired;
+      case 'service_disabled':
+        return GooglePlayServicesAvailability.serviceDisabled;
+      case 'service_invalid':
+        return GooglePlayServicesAvailability.serviceInvalid;
+    }
+
+    return null;
   }
 }

@@ -2,7 +2,9 @@ package com.codesfirst.grecaptcha
 
 import android.app.Activity
 import androidx.annotation.NonNull
+import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.safetynet.SafetyNet
+import com.google.android.gms.common.GoogleApiAvailability
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -45,7 +47,22 @@ class GrecaptchaPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
       "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
-      "isSupported" -> result.success(true)
+      "isSupported" -> {
+        if (activity == null) {
+          result.error(
+            "grecaptcha",
+            "No activity found, this plugin works with Activity only.",
+            null
+          )
+        } else {
+          if(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity!!) == ConnectionResult.SUCCESS) {
+            result.success(true)
+            return
+          }
+          result.success(false)
+        }
+      }
+      "checkGooglePlayServicesAvailability" -> checkGooglePlayServicesAvailability(result)
       "verify" -> {
         if (activity == null) {
           result.error(
@@ -77,5 +94,27 @@ class GrecaptchaPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
+  }
+
+
+  private fun checkGooglePlayServicesAvailability(result: Result) {
+    if (activity == null) {
+      result.error(
+        "grecaptcha",
+        "No activity found, this plugin works with Activity only.",
+        null
+      )
+      return
+    }
+
+    when (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity!!)) {
+      ConnectionResult.SUCCESS -> result.success("success")
+      ConnectionResult.SERVICE_MISSING -> result.success("serviceMissing")
+      ConnectionResult.SERVICE_UPDATING -> result.success("serviceUpdating")
+      ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED -> result.success("serviceVersionUpdateRequired")
+      ConnectionResult.SERVICE_DISABLED -> result.success("serviceDisabled")
+      ConnectionResult.SERVICE_INVALID -> result.success("serviceInvalid")
+      else -> result.error("Error", "Unknown error code", null)
+    }
   }
 }

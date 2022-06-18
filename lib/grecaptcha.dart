@@ -12,4 +12,8 @@ class Grecaptcha {
   Future<String> verifyWithRecaptcha(String siteKey) {
     return GrecaptchaPlatform.instance.verifyWithRecaptcha(siteKey);
   }
+
+  Future<GooglePlayServicesAvailability?> googlePlayServicesAvailability() {
+    return GrecaptchaPlatform.instance.googlePlayServicesAvailability();
+  }
 }

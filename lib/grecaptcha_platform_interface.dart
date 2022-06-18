@@ -34,4 +34,17 @@ abstract class GrecaptchaPlatform extends PlatformInterface {
   Future<String> verifyWithRecaptcha(String siteKey) {
     throw UnimplementedError('verifyWithRecaptcha() has not been implemented.');
   }
+
+  Future<GooglePlayServicesAvailability?> googlePlayServicesAvailability() {
+    throw UnimplementedError('googlePlayServicesAvailability() has not been implemented.');
+  }
+}
+
+enum GooglePlayServicesAvailability {
+  success,
+  serviceMissing,
+  serviceUpdating,
+  serviceVersionUpdateRequired,
+  serviceDisabled,
+  serviceInvalid
 }

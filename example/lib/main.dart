@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:grecaptcha/grecaptcha.dart';
+import 'package:grecaptcha/grecaptcha_platform_interface.dart';
 
 void main() => runApp(const MyApp());
 
@@ -19,9 +20,12 @@ class MyApp extends StatefulWidget {
 
 enum _VerificationStep { showingButton, working, error, verified }
 
+enum _VerificationPlayServicesStep { initial, working, error, verified }
+
 class _MyAppState extends State<MyApp> {
   // Start by showing the button inviting the user to use the example
   _VerificationStep _step = _VerificationStep.showingButton;
+  _VerificationPlayServicesStep _verifiedPlayServices = _VerificationPlayServicesStep.initial;
 
   void _startVerification() {
     setState(() => _step = _VerificationStep.working);
@@ -44,6 +48,36 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _startVerificationPlayServiceMethod1() {
+    setState(() => _verifiedPlayServices = _VerificationPlayServicesStep.working);
+
+    Grecaptcha().isAvailable.then((result) {
+      setState(() => _verifiedPlayServices = _VerificationPlayServicesStep.verified);
+    }, onError: (e, s) {
+      if (kDebugMode) {
+        print("Could not verify:\n$e at $s");
+      }
+      setState(() => _verifiedPlayServices = _VerificationPlayServicesStep.error);
+    });
+  }
+
+  void _startVerificationPlayServiceMethod2() {
+    setState(() => _verifiedPlayServices = _VerificationPlayServicesStep.working);
+
+    Grecaptcha().googlePlayServicesAvailability().then((result) {
+      if (result == GooglePlayServicesAvailability.success) {
+        setState(() => _verifiedPlayServices = _VerificationPlayServicesStep.verified);
+      } else {
+        setState(() => _verifiedPlayServices = _VerificationPlayServicesStep.error);
+      }
+    }, onError: (e, s) {
+      if (kDebugMode) {
+        print("Could not verify:\n$e at $s");
+      }
+      setState(() => _verifiedPlayServices = _VerificationPlayServicesStep.error);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content;
@@ -57,9 +91,9 @@ class _MyAppState extends State<MyApp> {
               const Text("This example will use the reCaptcha API to verify that you're human"),
               MaterialButton(
                 onPressed: _startVerification,
-                child: const Text("VERIFY"),
                 color: Colors.blueAccent,
                 textColor: Colors.white,
+                child: const Text("VERIFY"),
               )
             ]);
         break;
@@ -88,7 +122,35 @@ class _MyAppState extends State<MyApp> {
           title: const Text('reCaptcha example'),
         ),
         body: Center(
-          child: content,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              content,
+              const SizedBox(
+                height: 30,
+              ),
+              _verifiedPlayServices == _VerificationPlayServicesStep.working
+                  ? const CircularProgressIndicator()
+                  : const SizedBox.shrink(),
+              _verifiedPlayServices == _VerificationPlayServicesStep.verified
+                  ? const Text('Play Services is available')
+                  : _verifiedPlayServices == _VerificationPlayServicesStep.initial
+                      ? const Text('Verified Play Services')
+                      : const Text('Play Services is not available'),
+              MaterialButton(
+                onPressed: _startVerificationPlayServiceMethod1,
+                color: Colors.blue,
+                textColor: Colors.white,
+                child: const Text('Verified play services Method 1'),
+              ),
+              MaterialButton(
+                onPressed: _startVerificationPlayServiceMethod2,
+                color: Colors.blue,
+                textColor: Colors.white,
+                child: const Text('Verified play services Method 2'),
+              ),
+            ],
+          ),
         ),
       ),
     );
